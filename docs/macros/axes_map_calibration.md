@@ -17,6 +17,7 @@ Call the `AXES_MAP_CALIBRATION` macro and look for the graphs in the results fol
 |SPEED|80|speed of the toolhead in mm/s for the movements|
 |ACCEL|1500 (or max printer accel)|accel in mm/s^2 used for all the moves|
 |TRAVEL_SPEED|120|speed in mm/s used for all the travels moves|
+|ACCEL_CHIP|None|accelerometer chip you want to use for the test. If not provided, the macro will automatically find the best accelerometer chip based on your `[resonance_tester]` config section|
 
   > **Note**:
   >
