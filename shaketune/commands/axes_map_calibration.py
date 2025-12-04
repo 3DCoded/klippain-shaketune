@@ -24,13 +24,21 @@ def axes_map_calibration(gcmd, config, st_process: ShakeTuneProcess) -> None:
     speed = gcmd.get_float('SPEED', default=80.0, minval=20.0)
     accel = gcmd.get_int('ACCEL', default=1500, minval=100)
     feedrate_travel = gcmd.get_float('TRAVEL_SPEED', default=120.0, minval=20.0)
+    accel_chip = gcmd.get('ACCEL_CHIP', default=None)
+
+    if accel_chip == '':
+        accel_chip = None
 
     printer = config.get_printer()
     gcode = printer.lookup_object('gcode')
     toolhead = printer.lookup_object('toolhead')
     systime = printer.get_reactor().monotonic()
 
-    accel_chip = Accelerometer.find_axis_accelerometer(printer, 'xy')
+    current_accel_chip = accel_chip
+    if current_accel_chip is None:
+        accel_chip = Accelerometer.find_axis_accelerometer(printer, 'xy')
+    if current_accel_chip is None:
+            raise gcmd.error('No suitable accelerometer found for measurement!')
     k_accelerometer = printer.lookup_object(accel_chip, None)
     if k_accelerometer is None:
         raise gcmd.error('Multi-accelerometer configurations are not supported for this macro!')
